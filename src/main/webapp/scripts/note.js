@@ -53,3 +53,71 @@ function createNoteLi(noteId,noteTitle) {
     //将li元素添加到笔记列表中
     $("#note_ul").append($li);
 }
+//根据笔记ID加载笔记信息
+function loadNote() {
+    //设置笔记选中效果
+    $("#note_ul a").removeClass("checked");
+    $(this).find("a").addClass("checked");
+    //1.获取请求参数
+    var noteId = $(this).data("noteId");
+    //2.参数格式校验
+    //3.发送Ajax
+    $.ajax({
+        url:base_path+"/note/load.do",
+        type:"post",
+        data:{"noteId":noteId},
+        dataType:"json",
+        success:function (result) {
+            if(result.status == 0){
+                //获取标题
+                var title = result.data.cn_note_title;
+                //获取笔记内容
+                var body = result.data.cn_note_body;
+                //设置到编辑区域
+                $("#input_note_title").val(title);
+                um.setContent(body);
+            }
+        },
+        error:function () {
+            alert("加载笔记异常");
+        }
+    });
+}
+//"保存笔记"按钮的处理
+function updateNote() {
+    //1.获取请求参数
+    var title = $("#input_note_title").val();
+    var body = um.getContent();
+    var $li = $("#note_ul a.checked").parent();
+    var noteId = $li.data("noteId");
+    //清空原有错误提示
+    $("#note_title_span").html("");
+    //2.参数格式校验
+    if(title == ""){
+        $("#note_title_span").html("<font color='red'>标题不能为空</font>");
+    }else if($li.length==0){
+        alert("请选择要保存的笔记");
+    }else{
+        //3.发Ajax请求
+        $.ajax({
+            url:base_path+"/note/update.do",
+            type:"post",
+            data:{"noteId":noteId,"title":title,"body":body},
+            dataType:"json",
+            success:function (result) {
+                if(result.status == 0){
+                    //更新列表li中的标题
+                    var sli = "";
+                    sli +='<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i>'+title+'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>';
+                    //将选中li元素的a内容替换
+                    $li.find("a").html(sli);
+                    alert(result.msg);
+                }
+            },
+            error:function () {
+                alert("保存笔记异常");
+            }
+        });
+    }
+
+}

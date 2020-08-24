@@ -300,10 +300,12 @@
 				//2.给笔记本li元素绑定单击事件(动态绑定)
 				//$(selector).on(event,childSelector,data,function)
 				$("#book_ul").on("click","li",loadBookNotes);
-
-
-
-
+				//3.给笔记li元素绑定单击事件
+				$("#note_ul").on("click","li",loadNote);
+				//4.给“保存笔记”按钮绑定单击事件处理
+				$("#save_note").click(updateNote);
+				//5.关闭对话框(对所有的对话框都有效)
+				$("#can").on("click",".cancle,.close",closeAlertWindow);
 
 			});
 		</script>
