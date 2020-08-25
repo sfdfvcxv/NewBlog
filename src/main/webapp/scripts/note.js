@@ -121,3 +121,44 @@ function updateNote() {
     }
 
 }
+//创建笔记
+function addNote() {
+    //获取请求参数
+    var userId = getCookie("uid");
+    var noteTitle = $("#input_note").val().trim();
+    var $li = $("#book_ul a.checked").parent();
+    var bookId = $li.data("bookId");
+    //参数格式校验
+    var ok = true;
+    if(userId == null){
+        ok = false;
+        window.location.href = "log_in.html";
+    }
+    if(noteTitle == ""){
+        ok = false;
+        $("#note_span").html("笔记名称为空");
+    }
+    //发送Ajax
+    if(ok){
+        $.ajax({
+            url:base_path+"/note/add.do",
+            type:"post",
+            data:{"userId":userId,"bookId":bookId,"noteTitle":noteTitle},
+            dataType:"json",
+            success:function (result) {
+                if(result.status == 0){
+                    //关闭创建笔记弹窗
+                    closeAlertWindow();
+                    var noteId = result.data;
+                    //生成笔记li
+                    createNoteLi(noteId,noteTitle);
+                    //提示成功
+                    alert(result.msg);
+                }
+            },
+            error:function () {
+                alert("创建笔记异常");
+            }
+        });
+    }
+}

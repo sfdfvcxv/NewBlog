@@ -306,7 +306,14 @@
 				$("#save_note").click(updateNote);
 				//5.关闭对话框(对所有的对话框都有效)
 				$("#can").on("click",".cancle,.close",closeAlertWindow);
-
+				//6.弹出“创建笔记本”对话框dialog模态框
+				$("#add_notebook").click(alertAddBookWindow);
+				//7.给新建笔记本的创建按钮绑定单击事件
+				$("#can").on("click","#sure_addbook",addBook);
+				//8.弹出“创建笔记”对话框dialog模态框
+				$("#add_note").click(alertAddNoteWindow);
+				//9.给新建笔记本的创建按钮绑定单击事件
+				$("#can").on("click","#sure_addnote",addNote);
 			});
 		</script>
 
