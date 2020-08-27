@@ -78,4 +78,40 @@ public class NoteServiceImpl implements NoteService{
         noteResult.setData(noteId);
         return noteResult;
     }
+
+    @Override
+    public NoteResult deleteNote(String noteId) {
+        NoteResult noteResult = new NoteResult();
+        Note note = new Note();
+        note.setCn_note_id(noteId);
+        note.setCn_note_status_id("2");
+        int i = noteDao.updateNote(note);
+        if( i >= 1){ //成功
+            noteResult.setStatus(0);
+            noteResult.setMsg("笔记删除成功");
+        }else{//失败
+            noteResult.setStatus(1);
+            noteResult.setMsg("笔记删除失败");
+        }
+        return noteResult;
+    }
+
+    @Override
+    public NoteResult moveNote(String noteId, String bookId) {
+        NoteResult noteResult=new NoteResult();
+        Note note=new Note();
+        note.setCn_note_id(noteId);
+        note.setCn_notebook_id(bookId);
+        int i=noteDao.updateNote(note);
+        if (i>=1){
+            noteResult.setStatus(0);
+            noteResult.setMsg("移动笔记成功");
+        }else{
+            noteResult.setStatus(1);
+            noteResult.setMsg("移动笔记失败");
+        }
+        return noteResult;
+    }
+
+
 }

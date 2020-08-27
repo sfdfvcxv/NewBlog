@@ -11,4 +11,14 @@ public interface NoteService {
     NoteResult loadNote(String noteId);
     NoteResult updateNote(String noteId,String title,String body);
     NoteResult addNote(String noteTitle,String bookId,String userId);
+    NoteResult deleteNote(String noteId);
+
+    /**
+     * 移动笔记
+     * @param noteId 笔记本id
+     * @param bookId 笔记id
+     * @return
+     */
+    NoteResult moveNote(String noteId,String bookId);
+
 }
